@@ -101,6 +101,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.roles_path     = "chef-repo/roles"
     chef.data_bags_path = "chef-repo/data_bags"
     #chef.add_role "web"
+    chef.add_recipe "ruby_build"
     chef.add_recipe "ruby"
 
     #chef.add_recipe "rbenv"
