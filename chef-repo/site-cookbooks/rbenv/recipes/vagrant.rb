@@ -1,8 +1,6 @@
 #
 # Cookbook Name:: rbenv
-# Resource:: ruby
-#
-# Author:: Fletcher Nichol <fnichol@nichol.ca>
+# Recipe:: vagrant
 #
 # Copyright 2011, Fletcher Nichol
 #
@@ -19,20 +17,3 @@
 # limitations under the License.
 #
 
-actions :install, :reinstall
-
-attribute :definition,  :kind_of => String, :name_attribute => true
-attribute :definition_file,	:kind_of => String
-attribute :root_path,   :kind_of => String
-attribute :user,        :kind_of => String
-attribute :environment, :kind_of => Hash
-
-def initialize(*args)
-  super
-  @action = :install
-  @rbenv_version = @definition
-end
-
-def to_s
-  "#{super} (#{@user || 'system'})"
-end

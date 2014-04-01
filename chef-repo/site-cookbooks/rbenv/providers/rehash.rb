@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: rbenv
-# Resource:: ruby
+# Provider:: rehash
 #
 # Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
-# Copyright 2011, Fletcher Nichol
+# Copyright 2011, 2014, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,25 @@
 # limitations under the License.
 #
 
-actions :install, :reinstall
-
-attribute :definition,  :kind_of => String, :name_attribute => true
-attribute :definition_file,	:kind_of => String
-attribute :root_path,   :kind_of => String
-attribute :user,        :kind_of => String
-attribute :environment, :kind_of => Hash
-
-def initialize(*args)
-  super
-  @action = :install
-  @rbenv_version = @definition
+def whyrun_supported?
+  true
 end
 
-def to_s
-  "#{super} (#{@user || 'system'})"
+use_inline_resources
+
+include Chef::Rbenv::ScriptHelpers
+
+action :run do
+  set_updated { run_script }
+end
+
+def run_script
+  command = %{rbenv rehash}
+
+  rbenv_script "#{command} #{which_rbenv}" do
+    code        command
+    user        new_resource.user       if new_resource.user
+    root_path   new_resource.root_path  if new_resource.root_path
+    action      :run
+  end
 end
