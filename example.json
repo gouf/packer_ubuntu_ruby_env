@@ -82,6 +82,7 @@
         "apt",
         "ruby_build",
         "ruby",
+        "sqlite",
       ]
     }
   ]
