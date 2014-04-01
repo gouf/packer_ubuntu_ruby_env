@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: rbenv
-# Resource:: gem
+# Resource:: global
 #
 # Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
@@ -19,22 +19,17 @@
 # limitations under the License.
 #
 
-actions :install, :upgrade, :remove, :purge
+actions :create
 
-attribute :package_name,  :kind_of => String, :name_attribute => true
-attribute :rbenv_version, :kind_of => String, :default => "global"
-attribute :version,       :kind_of => String
-attribute :response_file, :kind_of => String
-attribute :source,        :kind_of => String
-attribute :options,       :kind_of => [String, Hash]
-attribute :gem_binary,    :kind_of => String
+attribute :rbenv_version, :kind_of => String, :name_attribute => true
 attribute :user,          :kind_of => String
 attribute :root_path,     :kind_of => String
 
-include Chef::Rbenv::Mixin::ResourceString
-
 def initialize(*args)
   super
-  @action = :install
-  @provider = Chef::Provider::Package::RbenvRubygems
+  @action = :create
+end
+
+def to_s
+  "#{super} (#{@user || 'system'})"
 end

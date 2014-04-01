@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: rbenv
-# Resource:: gem
+# Resource:: rehash
 #
 # Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
@@ -19,22 +19,13 @@
 # limitations under the License.
 #
 
-actions :install, :upgrade, :remove, :purge
+actions :run
 
-attribute :package_name,  :kind_of => String, :name_attribute => true
-attribute :rbenv_version, :kind_of => String, :default => "global"
-attribute :version,       :kind_of => String
-attribute :response_file, :kind_of => String
-attribute :source,        :kind_of => String
-attribute :options,       :kind_of => [String, Hash]
-attribute :gem_binary,    :kind_of => String
-attribute :user,          :kind_of => String
-attribute :root_path,     :kind_of => String
-
-include Chef::Rbenv::Mixin::ResourceString
+attribute :name,      :kind_of => String, :name_attribute => true
+attribute :user,      :kind_of => String
+attribute :root_path, :kind_of => String
 
 def initialize(*args)
   super
-  @action = :install
-  @provider = Chef::Provider::Package::RbenvRubygems
+  @action = :run
 end
