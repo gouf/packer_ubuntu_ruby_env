@@ -44,6 +44,11 @@
     "boot_wait": "4s",
     "vm_name": "box",
     "http_directory": "./",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "2048"],
+      ["modifyvm", "{{.Name}}", "--cpus", "4"],
+      ["modifyvm", "{{.Name}}", "--ioapic", "on"]
+    ],
     "boot_command": [
       "<esc></esc><esc><enter><wait>",
       "/install/vmlinuz noapic ",
