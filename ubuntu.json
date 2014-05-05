@@ -23,8 +23,8 @@
     "image_id": "3101918",
     "ssh_username": "root",
     "ssh_port": "22",
-    "snapshot_name": "packer-example {{timestamp}}",
-    "droplet_name": "packer-example"
+    "snapshot_name": "ruby env {{timestamp}}",
+    "droplet_name": "ruby-env"
   },{
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
