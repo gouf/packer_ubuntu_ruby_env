@@ -82,6 +82,18 @@
     },
     {
       "type": "chef-solo",
+      "only": ["virtualbox-iso"],
+      "cookbook_paths": ["chef-repo/cookbooks", "chef-repo/site-cookbooks"],
+      "run_list": [
+        "apt",
+        "ruby_build",
+        "ruby",
+        "sqlite",
+        "vbguest"
+      ]
+    },
+    {
+      "type": "chef-solo",
       "cookbook_paths": ["chef-repo/cookbooks", "chef-repo/site-cookbooks"],
       "run_list": [
         "apt",
