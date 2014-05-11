@@ -3,7 +3,8 @@
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
     "do_api_key": "{{env `DIGITALOCEAN_API_KEY`}}",
-    "do_cliend_id": "{{env `DIGITALOCEAN_CLIENT_ID`}}"
+    "do_cliend_id": "{{env `DIGITALOCEAN_CLIENT_ID`}}",
+    "home_dir": "{{env `HOME`}}"
   },
   "builders": [{
     "type": "amazon-ebs",
