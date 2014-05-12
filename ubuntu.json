@@ -21,7 +21,7 @@
     "client_id": "{{user `do_cliend_id`}}",
     "size_id": "63",
     "region_id": "4",
-    "image_id": "3101918",
+    "image_id": "3240036",
     "ssh_username": "root",
     "ssh_port": "22",
     "snapshot_name": "ruby env {{timestamp}}",
