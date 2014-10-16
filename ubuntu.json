@@ -1,107 +1,140 @@
 {
-  "variables": {
-    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
-    "do_api_key": "{{env `DIGITALOCEAN_API_KEY`}}",
-    "do_cliend_id": "{{env `DIGITALOCEAN_CLIENT_ID`}}",
-    "home_dir": "{{env `HOME`}}"
-  },
-  "builders": [{
-    "type": "amazon-ebs",
-    "access_key": "{{user `aws_access_key`}}",
-    "secret_key": "{{user `aws_secret_key`}}",
-    "region": "ap-northeast-1",
-    "source_ami": "ami-bddaa2bc",
-    "instance_type": "m3.xlarge",
-    "ssh_username": "ubuntu",
-    "ami_name": "packer-example {{timestamp}}"
-  },{
-    "type": "digitalocean",
-    "api_key": "{{user `do_api_key`}}",
-    "client_id": "{{user `do_cliend_id`}}",
-    "size_id": "63",
-    "region_id": "4",
-    "image_id": "3240036",
-    "ssh_username": "root",
-    "ssh_port": "22",
-    "snapshot_name": "ruby env {{timestamp}}",
-    "droplet_name": "ruby-env"
-  },{
-    "type": "virtualbox-iso",
-    "guest_os_type": "Ubuntu_64",
-    "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04-server-amd64.iso",
-    "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
-    "iso_checksum_type": "md5",
-    "ssh_username": "vagrant",
-    "ssh_password": "vagrant",
-    "ssh_wait_timeout": "15m",
-    "disk_size": "40000",
-    "format": "ovf",
-    "guest_additions_mode": "upload",
-    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.10/VBoxGuestAdditions_4.3.10.iso",
-    "guest_additions_sha256": "247e15e9a205dcd4761f6cb547ceca2a61e8d6905c1930870939fd323f4cd1ae",
-    "hard_drive_interface": "sata",
-    "headless": "true",
-    "boot_wait": "4s",
-    "vm_name": "box",
-    "http_directory": "./",
-    "vboxmanage": [
-      ["modifyvm", "{{.Name}}", "--memory", "2048"],
-      ["modifyvm", "{{.Name}}", "--cpus", "4"],
-      ["modifyvm", "{{.Name}}", "--ioapic", "on"]
-    ],
-    "boot_command": [
-      "<esc></esc><esc><enter><wait>",
-      "/install/vmlinuz noapic ",
-      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
-      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-      "hostname=packer-test ",
-      "fb=false debconf/frontend=noninteractive ",
-      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
-      "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
-      "initrd=/install/initrd.gz -- ",
-      "<enter><wait>"
-    ],
-    "shutdown_command": "echo 'vagrant' | sudo -S shutdown -hP now"
-  }],
-  "post-processors": [{
-    "type": "vagrant",
-    "output": "./ubuntu-ubuntu-14.04-server-amd64.box",
-    "override": {
-      "virtualbox-iso": {
-        "compression_level": "9"
-      }
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_name": "packer-example {{timestamp}}",
+      "instance_type": "m3.xlarge",
+      "region": "ap-northeast-1",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "source_ami": "ami-bddaa2bc",
+      "ssh_username": "ubuntu",
+      "type": "amazon-ebs"
+    },
+    {
+      "api_key": "{{user `do_api_key`}}",
+      "client_id": "{{user `do_cliend_id`}}",
+      "droplet_name": "ruby-env",
+      "image_id": "3240036",
+      "region_id": "4",
+      "size_id": "63",
+      "snapshot_name": "ruby env {{timestamp}}",
+      "ssh_port": "22",
+      "ssh_username": "root",
+      "type": "digitalocean"
+    },
+    {
+      "boot_command": [
+        "<esc></esc><esc><enter><wait>",
+        "/install/vmlinuz noapic ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+        "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+        "hostname=packer-test ",
+        "fb=false debconf/frontend=noninteractive ",
+        "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+        "initrd=/install/initrd.gz -- ",
+        "<enter><wait>"
+      ],
+      "boot_wait": "4s",
+      "disk_size": "40000",
+      "format": "ovf",
+      "guest_additions_mode": "upload",
+      "guest_additions_sha256": "247e15e9a205dcd4761f6cb547ceca2a61e8d6905c1930870939fd323f4cd1ae",
+      "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.10/VBoxGuestAdditions_4.3.10.iso",
+      "guest_os_type": "Ubuntu_64",
+      "hard_drive_interface": "sata",
+      "headless": "true",
+      "http_directory": "./",
+      "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
+      "iso_checksum_type": "md5",
+      "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04-server-amd64.iso",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -hP now",
+      "ssh_password": "vagrant",
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "15m",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "4"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--ioapic",
+          "on"
+        ]
+      ],
+      "vm_name": "box"
     }
-  }],
+  ],
+  "post-processors": [
+    {
+      "output": "./ubuntu-ubuntu-14.04-server-amd64.box",
+      "override": {
+        "virtualbox-iso": {
+          "compression_level": "9"
+        }
+      },
+      "type": "vagrant"
+    }
+  ],
   "provisioners": [
-    {"type": "shell",
-      "only": ["virtualbox-iso"],
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
       "scripts": [
         "vagrant.ssh",
         "vbox.sh"
-      ]
+      ],
+      "type": "shell"
     },
     {
-      "type": "chef-solo",
-      "only": ["virtualbox-iso"],
-      "cookbook_paths": ["{{user `home_dir`}}/chef-repo/cookbooks", "{{user `home_dir`}}/chef-repo/site-cookbooks"],
+      "cookbook_paths": [
+        "{{user `home_dir`}}/chef-repo/cookbooks",
+        "{{user `home_dir`}}/chef-repo/site-cookbooks"
+      ],
+      "only": [
+        "virtualbox-iso"
+      ],
       "run_list": [
         "apt",
         "ruby_build",
         "ruby",
         "sqlite",
         "vbguest"
-      ]
+      ],
+      "type": "chef-solo"
     },
     {
-      "type": "chef-solo",
-      "cookbook_paths": ["chef-repo/cookbooks", "chef-repo/site-cookbooks"],
+      "cookbook_paths": [
+        "chef-repo/cookbooks",
+        "chef-repo/site-cookbooks"
+      ],
       "run_list": [
         "apt",
         "ruby_build",
         "ruby",
         "sqlite"
-      ]
+      ],
+      "type": "chef-solo"
     }
-  ]
+  ],
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "do_api_key": "{{env `DIGITALOCEAN_API_KEY`}}",
+    "do_cliend_id": "{{env `DIGITALOCEAN_CLIENT_ID`}}",
+    "home_dir": "{{env `HOME`}}"
+  }
 }
+
